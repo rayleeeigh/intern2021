@@ -11,7 +11,7 @@ function App() {
             <Input display="block" ml="25%" w="50%" variant="outline" placeholder="Email" />
             <Input display="block" ml="25%" w="50%" variant="outline" placeholder="Password" />
             <Input display="block" ml="25%" w="50%" variant="outline" placeholder="Confirm Password" />
-            <Button colorScheme="blue" mt="2%">Reset Password</Button>
+            <Button colorScheme="blue" mt="2%">Reset Passwords</Button>
 
         </Box>
       </Box>
