@@ -7,7 +7,7 @@ function App() {
 
         <Box textAlign="center" position="absolute" bgGradient="linear(to-b, blue.200, yellow.500)" w="100%" h="100vh">
           <Box bg="white" border="1px" borderColor="gold" mt="9%" pt="3%" ml="25%" w="50%" h="50%">
-            <Heading mb="5%">Reset Password</Heading>
+            <Heading mb="5%">Reset Passwords</Heading>
             <Input display="block" ml="25%" w="50%" variant="outline" placeholder="Email" />
             <Input display="block" ml="25%" w="50%" variant="outline" placeholder="Password" />
             <Input display="block" ml="25%" w="50%" variant="outline" placeholder="Confirm Password" />
