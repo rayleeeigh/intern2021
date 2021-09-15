@@ -46,7 +46,7 @@ const Login = () => {
             h="50%"
           >
             <Heading mb="5%" color="black">
-              Logins
+              Login
             </Heading>
             <form>
               <Input

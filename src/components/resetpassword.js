@@ -44,7 +44,7 @@ function App() {
               placeholder="Confirm Password"
             />
             <Button colorScheme="blue" mt="2%">
-              Reset Password Arnan
+              Reset Password
             </Button>
           </Box>
         </Box>
