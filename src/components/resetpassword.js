@@ -16,7 +16,6 @@ function App() {
         </Box>
       </Box>
 
-
       </header>
     </div>
   );
