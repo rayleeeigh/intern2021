@@ -75,7 +75,7 @@ const Login = () => {
               />
 
               <Button colorScheme="blue" mt="2%" onClick={handleFormSubmit}>
-                Logins
+                Login
               </Button>
               <br></br>
 
