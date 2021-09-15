@@ -7,7 +7,6 @@ import { Box,
     Link,
     FormControl,
     FormLabel,
-    FormErrorMessage,
     FormHelperText, } from "@chakra-ui/react"
 class Form extends Component {
     constructor(props) {
