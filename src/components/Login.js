@@ -80,8 +80,13 @@ const Login = () => {
               <br></br>
 
               <Button colorScheme="blue" mt="2%">
-                <Link to="/sample">Sign Up</Link>
+                <Link to="/form">Sign Up</Link>
               </Button>
+              <div style={{ paddingTop: 20 }}>
+                <a href="*" style={{ color: "blue" }}>
+                  <Link to="/reset">Forgot Password</Link>
+                </a>
+              </div>
             </form>
           </Box>
         </Box>
