@@ -3,7 +3,7 @@ import Formpage from "./components/Form";
 import Login from "./components/Login";
 import ResetPass from "./components/resetpassword";
 
-import { BrowserRouter, Switch, Route } from "react-router-dom"
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 class App extends Component {
   render() {
