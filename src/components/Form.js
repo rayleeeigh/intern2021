@@ -50,7 +50,7 @@ class Form extends Component {
                             onChange={this.handlePasswordChange} 
                             />
                         <div>
-                            <Link to="/login" color="blue">Login</Link>
+                            <Link href="/login" color="blue">Login</Link>
                         </div>
                         <div>
                             <Button colorScheme="teal" size="md">
