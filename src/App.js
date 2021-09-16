@@ -10,6 +10,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
+          <Route path="/" component={Login} exact />
           <Route path="/login" component={Login} />
           <Route path="/form" component={Formpage} />
           <Route path="/reset" component={ResetPass} />

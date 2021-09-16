@@ -9,6 +9,7 @@ const Login = () => {
     password: "",
   });
 
+  const [errors, setErrors] = useState({});
   const handleChange = (event) => {
     setUser({
       ...user,
@@ -18,12 +19,26 @@ const Login = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (Validation(user) === 0) {
+    // if (Validation(user) === 0) {
+    //   alert("Login Successful");
+    // } else {
+    //   alert("Error in Loggin In");
+    // }
+
+    setErrors(Validation(user));
+    // setDataCorrect(true);
+    if (Object.keys(Validation(user)).length === 0) {
       alert("Login Successful");
-    } else {
-      alert("Error in Loggin In");
+      user.email = "";
+      user.password = "";
     }
   };
+
+  // const checkLogin = (e) =>{
+  //    if (Object.keys(errors).length === 0 && dataCorrect) {
+  //      alert("Login Successful");
+  //    }
+  // }
 
   return (
     <div className="App">
@@ -60,6 +75,7 @@ const Login = () => {
                 value={user.email}
                 onChange={handleChange}
               />
+              {errors.email && <p>{errors.email}</p>}
               <br></br>
               <Input
                 display="block"
@@ -74,6 +90,12 @@ const Login = () => {
                 onChange={handleChange}
               />
 
+              {errors.password && <p>{errors.password}</p>}
+              <div style={{ paddingTop: 20 }}>
+                <a href="*" style={{ color: "blue" }}>
+                  <Link to="/reset">Forgot Password</Link>
+                </a>
+              </div>
               <Button colorScheme="blue" mt="2%" onClick={handleFormSubmit}>
                 Login
               </Button>
@@ -82,11 +104,6 @@ const Login = () => {
               <Button colorScheme="blue" mt="2%">
                 <Link to="/form">Sign Up</Link>
               </Button>
-              <div style={{ paddingTop: 20 }}>
-                <a href="*" style={{ color: "blue" }}>
-                  <Link to="/reset">Forgot Password</Link>
-                </a>
-              </div>
             </form>
           </Box>
         </Box>
