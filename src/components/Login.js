@@ -19,14 +19,7 @@ const Login = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // if (Validation(user) === 0) {
-    //   alert("Login Successful");
-    // } else {
-    //   alert("Error in Loggin In");
-    // }
-
     setErrors(Validation(user));
-    // setDataCorrect(true);
     if (Object.keys(Validation(user)).length === 0) {
       alert("Login Successful");
       user.email = "";
@@ -96,7 +89,12 @@ const Login = () => {
                   <Link to="/reset">Forgot Password</Link>
                 </a>
               </div>
-              <Button colorScheme="blue" mt="2%" onClick={handleFormSubmit}>
+              <Button
+                colorScheme="blue"
+                mt="2%"
+                onClick={handleFormSubmit}
+                disabled={!user.email && !user.password}
+              >
                 Login
               </Button>
               <br></br>
