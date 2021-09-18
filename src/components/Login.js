@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Validation from "./Validation";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { Box, Heading, Input, Button } from "@chakra-ui/react";
+import Validation from "./Validation";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -10,23 +11,21 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const handleChange = (event) => {
-    setUser({
-      ...user,
-      [event.target.name]: event.target.value,
-    });
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    // e.preventDefault();
+    setErrors(Validation(user));
+    if (Object.keys(Validation(user)).length === 0) {
+      alert("Login Successful " + data.email);
+      data.email = "";
+      data.password = "";
+    }
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // if (Validation(user) === 0) {
-    //   alert("Login Successful");
-    // } else {
-    //   alert("Error in Loggin In");
-    // }
-
     setErrors(Validation(user));
-    // setDataCorrect(true);
     if (Object.keys(Validation(user)).length === 0) {
       alert("Login Successful");
       user.email = "";
@@ -34,11 +33,12 @@ const Login = () => {
     }
   };
 
-  // const checkLogin = (e) =>{
-  //    if (Object.keys(errors).length === 0 && dataCorrect) {
-  //      alert("Login Successful");
-  //    }
-  // }
+  const handleChange = (event) => {
+    setUser({
+      ...user,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   return (
     <div className="App">
@@ -63,8 +63,9 @@ const Login = () => {
             <Heading mb="5%" color="black">
               Login
             </Heading>
-            <form>
+            <form id="data" onSubmit={handleSubmit(onSubmit)}>
               <Input
+                {...register("email", { required: true })}
                 display="block"
                 ml="25%"
                 w="50%"
@@ -78,6 +79,10 @@ const Login = () => {
               {errors.email && <p>{errors.email}</p>}
               <br></br>
               <Input
+                {...register("password", {
+                  required: true,
+                  minLength: 5,
+                })}
                 display="block"
                 ml="25%"
                 w="50%"
@@ -89,14 +94,20 @@ const Login = () => {
                 value={user.password}
                 onChange={handleChange}
               />
-
               {errors.password && <p>{errors.password}</p>}
+
               <div style={{ paddingTop: 20 }}>
                 <a href="*" style={{ color: "blue" }}>
                   <Link to="/reset">Forgot Password</Link>
                 </a>
               </div>
-              <Button colorScheme="blue" mt="2%" onClick={handleFormSubmit}>
+              <Button
+                colorScheme="blue"
+                mt="2%"
+                disabled={!user.email && !user.password}
+                type="submit"
+                onClick={handleFormSubmit}
+              >
                 Login
               </Button>
               <br></br>
