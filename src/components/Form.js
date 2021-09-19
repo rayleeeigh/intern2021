@@ -1,44 +1,31 @@
-import React, { Component } from "react";
 import {
   Box,
   Heading,
-  Center,
   Input,
   Button,
   Link,
-  FormControl,
-  FormLabel,
-  FormHelperText,
 } from "@chakra-ui/react";
+import {useState} from 'react'
+import Validation from "./Validation";
 
-class Form extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: "",
-      password: "",
-    };
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+const Form = () => {
+  const[user,setUser] = useState({
+    email:"",
+    password:""
+  })
+  const [errors, setErrors] = useState({});
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    setErrors(Validation(user));
+    console.log(user);
+    if (Object.keys(Validation(user)).length === 0) {
+      alert("Succesfuly registered " + user.email);
+      user.email = "";
+      user.password = "";
+    }
+    console.log(user);
   }
-  handleEmailChange(event) {
-    this.setState({
-      email: event.target.value,
-    });
-  }
-  handlePasswordChange(event) {
-    this.setState({
-      password: event.target.value,
-    });
-  }
-  handleSubmit(event) {
-    alert("Successfully registered " + this.state.email + "!");
-    event.preventDefault();
-  }
-  render() {
-    return (
+  return (
       <Box
         textAlign="center"
         position="absolute"
@@ -60,41 +47,52 @@ class Form extends Component {
           <Heading size="lg" fontSize="30px">
             Registration Form
           </Heading>
-          <FormControl id="email" onSubmit={this.handleSubmit} isRequired>
-            <Center>
-              <FormLabel>Email</FormLabel>
-            </Center>
+          <form id="data" onSubmit={handleSubmit}>
+            <label>Email</label>
             <Input
-              variant="flushed"
-              type="email"
-              value={this.state.email}
-              onChange={this.handleEmailChange}
+              variant = "flushed"
+              type = "email"
+              value = {user.email}
+              onChange = {(e) => setUser({...user, email:e.target.value})}
             />
-            <FormHelperText>We'll never share your email.</FormHelperText>
-            <Center>
-              <FormLabel>Password</FormLabel>
-            </Center>
+             <span style={{
+                fontWeight: 'bold',
+                color: 'red',
+            }}>
+            {errors.email && <p>{errors.email}</p>}
+            </span>
+            <label>Password</label>
             <Input
+          
               variant="flushed"
               type="password"
-              value={this.state.password}
-              onChange={this.handlePasswordChange}
+              value = {user.password}
+              onChange = {(e) => setUser({...user, password:e.target.value})}
             />
+              <span style={{
+                fontWeight: 'bold',
+                color: 'red',
+              }}>{errors.password && <p>{errors.password}</p>}</span>
             <div>
               <Link href="/login" color="blue">
                 Login
               </Link>
             </div>
             <div>
-              <Button colorScheme="teal" size="md">
-                Submit
+            <Button
+                colorScheme="blue"
+                mt="2%"
+                type="submit"
+              >
+                Sign up
               </Button>
             </div>
-          </FormControl>
+          </form>
         </Box>
       </Box>
-    );
-  }
+  )
 }
+
+
 
 export default Form;
