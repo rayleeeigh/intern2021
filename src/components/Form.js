@@ -63,7 +63,6 @@ const Form = () => {
             </span>
             <label>Password</label>
             <Input
-          
               variant="flushed"
               type="password"
               value = {user.password}
@@ -83,6 +82,7 @@ const Form = () => {
                 colorScheme="blue"
                 mt="2%"
                 type="submit"
+                disabled={!user.email && !user.password}
               >
                 Sign up
               </Button>
