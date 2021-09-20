@@ -13,15 +13,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    // e.preventDefault();
-    setErrors(Validation(user));
-    if (Object.keys(Validation(user)).length === 0) {
-      alert("Login Successful " + data.email);
-      data.email = "";
-      data.password = "";
-    }
-  };
+  const onSubmit = (data) => alert("Login Successful");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
