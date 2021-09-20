@@ -83,6 +83,7 @@ const Form = () => {
                 colorScheme="blue"
                 mt="2%"
                 type="submit"
+                disabled={!user.email && !user.password}
               >
                 Sign up
               </Button>
