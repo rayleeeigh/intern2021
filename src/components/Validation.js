@@ -15,10 +15,6 @@ const Validation = (user) => {
     errors.password = "Password must be more that 5 characters";
   }
 
-  // if (user.email !== "" && user.password !== "" && user.password.length > 5) {
-  //   errors.success = "Login Successful";
-  // }
-
   return errors;
 };
 
