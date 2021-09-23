@@ -4,16 +4,16 @@ This project is for practice and activity submission to Fullspeed Technologies I
 
 ## Setup the project
 
-##cd intern2021
+#### cd intern2021
 
 ### For client (ReactJS)
--cd client
--npm install
--npm start
+#### $ cd client<br>
+#### $ npm install<br>
+#### $ npm start<br>
 
-### For server
--cd server
--npm install
--npm run start
+### For server (ExpressJS)
+#### $ cd server<br>
+#### $ npm install<br>
+#### $ npm run start<br><br>
 
 Comments and critiques are welcome. We are aiming to be better each day.

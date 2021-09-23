@@ -6,6 +6,7 @@ exports.createAccount = async(req, res) => {
         account_password: req.body.password,
         updatedAt: null
     })
+    return res.status(200).send("Success");
 }
 
 exports.showAccounts = async(req, res) => {
