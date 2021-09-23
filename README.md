@@ -11,7 +11,7 @@ This project is for practice and activity submission to Fullspeed Technologies I
 #### $ npm install<br>
 #### $ npm start<br>
 
-### For server
+### For server (ExpressJS)
 #### $ cd server<br>
 #### $ npm install<br>
 #### $ npm run start<br><br>
