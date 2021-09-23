@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
   Box,
@@ -11,13 +11,16 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import Validation from "./Validation";
-
+import Axios from "axios";
+import Home from "./Home";
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
+  const history = useHistory();
+  
   const [errors, setErrors] = useState({});
   const { register, handleSubmit } = useForm();
 
@@ -27,9 +30,19 @@ const Login = () => {
     e.preventDefault();
     setErrors(Validation(user));
     if (Object.keys(Validation(user)).length === 0) {
-      alert("Login Successful");
-      user.email = "";
-      user.password = "";
+      Axios.post('http://localhost:5000/login',{
+        email: user.email,
+        password: user.password
+      }).then((res)=>{
+        if(res.status==200){
+          console.log(res.status);
+          alert("Login SuccessFul");
+          history.push('/home')
+        }else{
+          console.log("failed");
+          alert("Login Failed");
+        }
+      });
     }
   };
 
@@ -46,21 +59,22 @@ const Login = () => {
         <Box
           textAlign="center"
           position="absolute"
-          bgGradient="linear(to-b, blue.200, yellow.500)"
+          bgGradient="linear(to-r, green.200, pink.500)"
           w="100%"
           h="100vh"
         >
           <Stack spacing={8} mx={"auto"} maxW={"lg"} py={40}>
             <Box
               rounded="lg"
-              bg="white"
               border="1px"
-              borderColor="gold"
               boxShadow="lg"
               p={8}
+              bg="gray.200"
+              h="60vh"
+              w="50vh"
             >
               <Box paddingBottom={12}>
-                <Heading mb="5%" color="black">
+                <Heading mb="5%" size="lg" color="black">
                   Login Here
                 </Heading>
               </Box>
@@ -110,7 +124,7 @@ const Login = () => {
                       justify={"space-between"}
                     >
                       <a href="*" style={{ color: "blue" }}>
-                        <Link to="/form">No Account? Signup Here</Link>
+                        <Link to="/register">No Account? Signup Here</Link>
                       </a>
                       <a href="*" style={{ color: "blue" }}>
                         <Link to="/reset">Forgot Password</Link>

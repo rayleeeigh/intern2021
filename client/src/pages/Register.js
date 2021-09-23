@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Input, Container, Button, Center, Heading, FormControl, FormLabel} from "@chakra-ui/react";
 import Axios from 'axios';
 import {useForm} from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 
 const Register = () => {
@@ -16,15 +17,24 @@ const Register = () => {
     const onSubmit = data => {
       console.log(data);
     }
+
+    const history = useHistory();
+    
     const addAccount = async(e) =>{
       e.preventDefault();
       await Axios.post('http://localhost:5000/create', user)
         .then((res)=>{
-          alert("SUCCESSFUL REGISTER" + user.email);
-          user.email ="";
-          user.password="";
-          console.log(res)
-         
+          if(res.status===200){
+            alert("SUCCESSFUL REGISTER " + user.email);
+            user.email ="";
+            user.password="";
+            console.log(res)
+            history.push("/login");
+          }else if(res.status===404){
+            alert("Account Exist Already");
+            user.email ="";
+            user.password="";
+          }
         })
         .catch((err)=>{
           console.log(err);
