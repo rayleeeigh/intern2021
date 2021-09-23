@@ -1,5 +1,5 @@
 const {Sequelize} = require ("sequelize");
-const sequelize = new Sequelize("mysqlern","root","",{
+const sequelize = new Sequelize("msqlern","root","",{
   host:"localhost",
   dialect:"mysql",
   pool:{
@@ -14,7 +14,6 @@ const sequelize = new Sequelize("mysqlern","root","",{
 });
 
 try{
-  console.log("otin");
   sequelize.authenticate();
 }catch(err){
   console.log(err);

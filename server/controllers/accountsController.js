@@ -1,11 +1,14 @@
-const accounts = require("../models/accounts")
+const account = require("../models/accounts");
 
 exports.createAccount = async(req, res) => {
-    let data = await user.model.create({
-        userEmail: "Rayl",
-        userPassword: "Xylem",
+    let data = await account.model.create({
+        account_email: req.body.email,
+        account_password: req.body.password,
         updatedAt: null
     })
+}
 
-    res.json(data);
+exports.showAccounts = async(req, res) => {
+    let data = await account.model.findAll();
+    res.send(data);
 }
