@@ -4,7 +4,7 @@ This project is for practice and activity submission to Fullspeed Technologies I
 
 ## Setup the project
 
-##cd intern2021
+## cd intern2021
 
 ### For client (ReactJS)
 -cd client
