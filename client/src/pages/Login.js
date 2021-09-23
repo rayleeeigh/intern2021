@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Box, Input, Container, Button, Center, Heading, FormControl, FormLabel, Text } from "@chakra-ui/react";
-import Axios from 'axios';
+import { Box, Input, Container, Button, Center, Heading, FormControl, FormLabel } from "@chakra-ui/react";
 
 const Login = () => {
     const [show, setShow] = useState(false);
@@ -8,22 +7,6 @@ const Login = () => {
   
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [accountList, setAccountList] = useState([]);
-  
-    const addAccount = () => {
-      Axios.post('http://localhost:5000/create',{
-        email: email,
-        password: password
-      }).then(()=>{
-        console.log("Success");
-      });
-    };
-    
-    const getAccounts = () => {
-      Axios.get('http://localhost:5000/accounts').then((response)=>{
-        setAccountList(response.data);
-      });
-    };
 
   return (
     <Box w="100%" h="100vh" bgGradient="linear(to-r, green.200, pink.500)">
@@ -49,18 +32,8 @@ const Login = () => {
                 </FormControl>
               </Container>
               <Container>
-                <Button onClick={addAccount}>Login</Button>
+                <Button>Login</Button>
               </Container>
-          </Container>
-          <Container>
-            <Container>
-              <Button onClick={getAccounts}>Show Accounts</Button>
-            </Container>
-            <Container>
-              {accountList.map((val, key) => {
-                return <Text key={val.account_id}>Email: {val.account_email} Password: {val.account_password}</Text>
-              })}
-            </Container>
           </Container>
         </Box>
       </Center>
