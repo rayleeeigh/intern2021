@@ -4,8 +4,16 @@ This project is for practice and activity submission to Fullspeed Technologies I
 
 ## Setup the project
 
-### git clone
-### cd intern2021
-### npm install
+##cd intern2021
+
+### For client (ReactJS)
+-cd client
+-npm install
+-npm start
+
+### For server
+-cd server
+-npm install
+-npm run start
 
 Comments and critiques are welcome. We are aiming to be better each day.
