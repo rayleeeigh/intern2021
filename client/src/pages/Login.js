@@ -14,20 +14,61 @@ import {
 } from "@chakra-ui/react";
 import Validation from "./Validation";
 import Axios from "axios";
-import Home from "./Home";
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+
 const Login = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  
+  const [logUsers , setLogUsers] = useState({})
+
+  const refreshToken = async () =>{
+    try {
+      const res = await axios.post("/refresh",{
+        token:logUsers.refreshToken
+      });
+      setLogUsers({
+        ...logUsers,
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken,
+      });
+      return res.data
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  // axios.interceptors.request.use(async(config)=>{
+  //   let currentDate = new Date();
+  //   const decodeToken = jwt_decode(logUsers.accessToken);
+  //   if(decodeToken.exp * 1000< currentDate.getTime()){
+  //     const data = await refreshToken();
+  //     config.headers["authorization"] = "Bearer" + data.accessToken;
+  //   }
+  //   return config
+  // },(error) =>{
+  //   return Promise.reject(error);
+  // })  
 
   const history = useHistory();
   
   const [errors, setErrors] = useState({});
-  const { register, handleSubmit } = useForm();
+
+  const { register, handleSubmit } = useForm({});
 
   const onSubmit = (data) => alert("Login Successful");
 
+  // const logout = (data) =>{
+  //   // alert("logout");
+  //   if(data){
+  //     Axios.post('http://localhost:5000/logout',{
+  //       headers:{authorization : "Bearer" + logUsers.accessToken},
+  //     });
+  //   }
+  // }
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setErrors(Validation(user));
@@ -37,15 +78,17 @@ const Login = () => {
         password: user.password
       }).then((res)=>{
         if(res.status==200){
-          console.log(res.status);
+          // console.log(res.data);
           alert("Login SuccessFul");
-          history.push('/home')
+          console.log(res.data);
+          history.push({pathname:'/home', state:{user:res.data}});
         }else{
           console.log("failed");
           alert("Login Failed");
         }
       });
-    }
+
+    } 
   };
 
   const handleChange = (event) => {
@@ -145,6 +188,7 @@ const Login = () => {
                       <Text display="inline-block">Don't have an account? <a href="*" style={{ color: "blue" }}><Link to="/register">Register</Link></a></Text>
                     </Box>
                     </Stack>
+                    
                   </Stack>
                 </form>
               </Stack>
