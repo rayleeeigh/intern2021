@@ -12,21 +12,19 @@ import {
 import axios from "axios";
 
 export default function SplitScreen() {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const [user, setUser] = useState({ });
 
-  // if(user.email===""){
-  //   return <Redirect to="/login"/>;
-  // }
 
-  const getDetails = async(e) =>{
-    axios.get("/user/getDetails").then(({data:{email, password}})=>{
-      this.setUser({email,password});
-    })
-    .catch((err)=>console.log(err));
+  if(!{user}){
+    return <Redirect to="/login"/>;
   }
+
+  // const getDetails = async(e) =>{
+  //   axios.get("/user/getDetails").then(({data:{email, password}})=>{
+  //     this.setUser({email,password});
+  //   })
+  //   .catch((err)=>console.log(err));
+  // }
 
   return (
     <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
@@ -46,7 +44,7 @@ export default function SplitScreen() {
                 bg: 'blue.400',
                 zIndex: -1,
               }}>
-              FULLSPEED TECHNOLOGIES
+              FullSpeed Technologies
             </Text>
             <br />{' '}
             <Text color={'blue.400'} as={'span'}>

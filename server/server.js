@@ -35,4 +35,4 @@ app.use(express.json());
 require("./connection.js");
 app.use("/", accountRoutes);
 
-app.listen(5000);
+app.listen(5000 , ()=>console.log("Backend is running"));

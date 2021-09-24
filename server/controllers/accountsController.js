@@ -2,8 +2,19 @@ const account = require("../models/accounts");
 const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 const passport = require('passport');
+const jwt = require("jsonwebtoken");
+const e = require("express");
 
 var saltRounds = 10
+let refreshTokens = []
+
+const generateAccessToken = (user) =>{
+    return jwt.sign({account_id: user.account_id},"mySecretKey",{expiresIn:"5s"})
+}
+const generateRefreshToken = (user) =>{
+    return jwt.sign({account_id: user.account_id}, "myRefreshSecretKey")
+}
+
 
 
 exports.createAccount = async(req, res) => {
@@ -26,7 +37,7 @@ exports.createAccount = async(req, res) => {
         return res.status(200).send("Sign-up success");
         
     } else {
-        return res.status(404).send("Account Exists");
+        return res.status(207).send("Account Exists");
     }
 
     // let data = await account.model.create({
@@ -38,7 +49,7 @@ exports.createAccount = async(req, res) => {
 }
 
 exports.login = async(req, res) => {
-
+   
     let accounts = await account.model.findOne({
         where: {
             account_email: req.body.email
@@ -47,8 +58,19 @@ exports.login = async(req, res) => {
 
     if (accounts != null) {
         if (bcrypt.compareSync(req.body.password, accounts.account_password) && accounts.account_password != "") {
-            console.log("success");
-            return res.status(200).json({});
+            
+            // return res.status(200).json({});
+            const accessToken = generateAccessToken(accounts);
+            const refreshToken = generateRefreshToken(accounts);
+            refreshTokens.push(refreshToken);
+            res.json({
+                email:accounts.account_email,
+                accessToken,
+                refreshToken,
+            })
+            // res.send(accessToken);
+        
+            console.log(accounts);
         } else {
             return res.status(201).json({});
         }
@@ -56,6 +78,9 @@ exports.login = async(req, res) => {
         return res.status(202).json({});
     }
 
+    
+
+    //************USED PASSPORT AUTH************* */
     // passport.authenticate("local",(err,user,info)=>{
     //     if(err) throw err;
     //     if(!user) return res.status(404).json({});
@@ -69,6 +94,36 @@ exports.login = async(req, res) => {
     // })(req,res,next);
 }
 
+exports.refreshAccessToken = async(req,res)=>{
+    const refreshToken = req.body.token
+
+    if(!refreshToken) return res.status(401).json("You are not authenticated");
+
+    if(!refreshTokens.includes(refreshToken)){
+        return res.send(403).json("Refresh token is not valid");
+        // res.send(refreshTokens);
+    }
+    // else{
+    //     res.send("naa");
+    // }
+    jwt.verify(refreshToken , "myRefreshSecretKey", (err,user)=>{
+        err && console.log(err);
+        // res.send("verified");
+        refreshTokens = refreshTokens.filter((token)=>token!==refreshToken);
+
+        
+        const newAccessToken = generateAccessToken(user);
+        const newRefreshToken = generateRefreshToken(user);
+
+        
+        refreshTokens.push(newRefreshToken);
+        // res.send(newAccessToken);
+        res.status(200).json({
+            accessToken : newAccessToken,
+            refreshToken: newRefreshToken,
+        })
+    })
+}
 
 exports.showAccounts = async(req, res) => {
     let data = await account.model.findAll();
@@ -89,7 +144,7 @@ exports.resetPassword = async(req, res) => {
     });
 
     if(data==null){
-        return res.status(401).send("Account not found");
+        return res.status(205).send("Account not found");
     }else{
         data.account_password=hash;
         await data.save();
@@ -99,3 +154,9 @@ exports.resetPassword = async(req, res) => {
 
 }
 
+exports.logout = async(req, res) => {
+    const refreshToken = req.body.token;
+    refreshTokens = refreshTokens.filter((token)=>token !==refreshToken);
+    res.status(200).json("You logged out Successfully");
+
+}
