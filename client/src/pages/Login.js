@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link ,useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useRef } from "react";
 import {
   Box,
   Heading,
@@ -10,7 +11,17 @@ import {
   FormLabel,
   Stack,
   Center,
-  Text
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  useToast,
+  Container
 } from "@chakra-ui/react";
 import Validation from "./Validation";
 import Axios from "axios";
@@ -53,13 +64,17 @@ const Login = () => {
   //   return Promise.reject(error);
   // })  
 
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetConfirmPassword, setResetConfirmPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTooglePassword = () => setShowPassword(!showPassword)
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleToogleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword)
+
   const history = useHistory();
-  
-  const [errors, setErrors] = useState({});
-
-  const { register, handleSubmit } = useForm({});
-
-  const onSubmit = (data) => alert("Login Successful");
 
   // const logout = (data) =>{
   //   // alert("logout");
@@ -91,12 +106,36 @@ const Login = () => {
     } 
   };
 
+  const { register, handleSubmit, watch, formState:{ errors }, setErrors } = useForm();
+  const passwordcheck = useRef({});
+  passwordcheck.current = watch("resetpassword", "");
+  const onSubmit = (data) => toast({
+      title: "Reset Password",
+      description: "Reset Password Succesful",
+      status: "success",
+      duration: 5000,
+      isClosable: false,
+      position:"top"
+    });
+
   const handleChange = (event) => {
     setUser({
       ...user,
       [event.target.name]: event.target.value,
     });
   };
+
+  const resetPasswordf = () => {
+    Axios.post('http://localhost:5000/resetpassword',{
+      email: resetEmail,
+      password: resetPassword
+    }).then((res)=>{
+      console.log("Success");
+    });
+  };
+const toast = useToast()
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
         <Box
@@ -168,7 +207,67 @@ const Login = () => {
                       align={"start"}
                       justify={"space-between"}
                     >
-                      <Link to="/reset">Forgot Password?</Link>
+                      <Button onClick={onOpen}>Forgot Password?</Button>
+
+                      <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader>Reset Password</ModalHeader>
+                          <ModalCloseButton />
+                          <ModalBody>
+                          <form onSubmit={handleSubmit(onSubmit)}>
+                            <Container mt="5%">
+                                <Container>
+                                  <FormControl id="email" isRequired>
+                                    <FormLabel>Email Address</FormLabel>
+                                    <Input name="resetemail" {...register("resetemail", { required: true, pattern: {value: /^\S+@\S+$/i, message: "Invalid Email"} })}  placeholder="Enter email..." variant="filled" onChange={(event)=>{setResetEmail(event.target.value);}}/>
+                                  </FormControl>
+                                  {errors.resetemail &&  (
+                                      <Text color="red" fontSize="xs">{errors.resetemail.message}</Text>
+                                  )}
+                                </Container>
+                                <Container>
+                                  <FormControl id="password" isRequired>
+                                    <FormLabel>New Password</FormLabel>
+                                    <Input type={showPassword ? "text" : "password"} name="resetpassword" aria-invalid={errors.password ? "true" : "false"} {...register("resetpassword", { required: "Field must not be empty", minLength: 8 })} placeholder="Enter password" variant="filled" onChange={(event)=>{setResetPassword(event.target.value);}}/>
+                                    <Button position="absolute" ml="-10vh" mt="1vh" h="1.75rem" size="sm" onMouseDown={handleTooglePassword} onMouseUp={handleTooglePassword}>
+                                      {showPassword ? "Hide" : "Show"}
+                                    </Button>
+                                  </FormControl>
+                                  {errors.resetpassword &&  (
+                                      <Text color="red" fontSize="xs">{errors.resetpassword.message}</Text>
+                                  )}
+                                  {errors.resetpassword && errors.resetpassword.type === "minLength" && (
+                                      <Text color="red" fontSize="xs">Password must have atleast 8 characters</Text>
+                                  )}
+                                </Container>
+                                <Container>
+                                  <FormControl id="password" isRequired>
+                                    <FormLabel>Confirm Password</FormLabel>
+                                    <Input name="resetconfirmpassword" aria-invalid={errors.confirmpassword ? "true" : "false"} {...register("resetconfirmpassword", { required: "Field must not be empty", minLength: 8, validate: value => value === passwordcheck.current || "Passwords do not match" })} type={showConfirmPassword ? "text" : "password"} placeholder="Confirm password" variant="filled" onChange={(event)=>{setResetConfirmPassword(event.target.value);}}/>
+                                    <Button position="absolute" ml="-10vh" mt="1vh" h="1.75rem" size="sm" onMouseDown={handleToogleConfirmPassword} onMouseUp={handleToogleConfirmPassword}>
+                                      {showConfirmPassword ? "Hide" : "Show"}
+                                    </Button>
+                                  </FormControl>
+                                  {errors.resetconfirmpassword &&  (
+                                      <Text color="red" fontSize="xs">{errors.resetconfirmpassword.message}</Text>
+                                  )}
+                                  {errors.resetconfirmpassword && errors.resetconfirmpassword.type === "minLength" && (
+                                      <Text color="red" fontSize="xs">Password must have atleast 8 characters</Text>
+                                  )}
+                                </Container>
+                            </Container>
+                            </form>
+                          </ModalBody>
+
+                          <ModalFooter>
+                            <Button colorScheme="blue" mr={3} onClick={onClose}>
+                              Close
+                            </Button>
+                            <Button type="submit" disabled={resetEmail.length<1} onClick={resetPasswordf}>Reset Password</Button>
+                          </ModalFooter>
+                        </ModalContent>
+                      </Modal>
 
                       <Button
                       bg="gray.800"

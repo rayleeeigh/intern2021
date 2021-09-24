@@ -111,6 +111,7 @@ const Register = () => {
                 onClick={addAccount}
                 >Sign-up
                 </Button>
+
                 <Button  
                 bg="gray.200"
                 color="gray.800"
@@ -119,8 +120,7 @@ const Register = () => {
                 }}
                 w="45%"
                 border="1px"
-                type="submit"
-                onClick={addAccount}
+                to="/login"
                 >Login
                 </Button>
                 </Stack>
