@@ -9,6 +9,8 @@ import {
   FormControl,
   FormLabel,
   Stack,
+  Center,
+  Text
 } from "@chakra-ui/react";
 import Validation from "./Validation";
 import Axios from "axios";
@@ -54,8 +56,6 @@ const Login = () => {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
         <Box
           textAlign="center"
           position="absolute"
@@ -63,20 +63,22 @@ const Login = () => {
           w="100%"
           h="100vh"
         >
-          <Stack spacing={8} mx={"auto"} maxW={"lg"} py={40}>
+          <Center>
+          <Stack spacing={8} mx={"auto"} maxW={"lg"} mt="20vh">
             <Box
               rounded="lg"
-              border="1px"
               boxShadow="lg"
               p={8}
               bg="gray.200"
-              h="60vh"
-              w="50vh"
+              h="62vh"
+              w="60vh"
+              boxShadow="2xl"
             >
-              <Box paddingBottom={12}>
+              <Box paddingBottom={4}>
                 <Heading mb="5%" size="lg" color="black">
-                  Login Here
+                  Welcome Back!
                 </Heading>
+                <Text>Login or create account</Text>
               </Box>
               <Stack spacing={5}>
                 <form id="data" onSubmit={handleSubmit(onSubmit)}>
@@ -90,7 +92,7 @@ const Login = () => {
                       placeholder="Email Address..."
                       value={user.email}
                       onChange={handleChange}
-                      style={{ border: errors.email ? "1px solid red" : "" }}
+                      style={{ border: errors.email ? "1px solid red" : "1px solid black" }}
                     />
                     {errors.email && (
                       <p style={{ color: "red" }}>{errors.email}</p>
@@ -111,7 +113,7 @@ const Login = () => {
                       value={user.password}
                       onChange={handleChange}
                       border="red"
-                      style={{ border: errors.password ? "1px solid red" : "" }}
+                      style={{ border: errors.password ? "1px solid red" : "1px solid black" }}
                     />
                     {errors.password && (
                       <p style={{ color: "red" }}>{errors.password}</p>
@@ -123,17 +125,13 @@ const Login = () => {
                       align={"start"}
                       justify={"space-between"}
                     >
-                      <a href="*" style={{ color: "blue" }}>
-                        <Link to="/register">No Account? Signup Here</Link>
-                      </a>
-                      <a href="*" style={{ color: "blue" }}>
-                        <Link to="/reset">Forgot Password</Link>
-                      </a>
-                    </Stack>
-                    <Button
-                      colorScheme="blue"
+                      <Link to="/reset">Forgot Password?</Link>
+
+                      <Button
+                      bg="gray.800"
+                      color="white"
                       _hover={{
-                        bg: "blue.500",
+                        bg: "gray.500",
                       }}
                       disabled={!user.email && !user.password}
                       type="submit"
@@ -141,15 +139,19 @@ const Login = () => {
                     >
                       Login
                     </Button>
+                    </Stack>
+                    <Stack>
+                    <Box bg="gray.300" py={3} ml="-32px" w="60vh" rounded="lg">
+                      <Text display="inline-block">Don't have an account? <a href="*" style={{ color: "blue" }}><Link to="/register">Register</Link></a></Text>
+                    </Box>
+                    </Stack>
                   </Stack>
                 </form>
               </Stack>
             </Box>
           </Stack>
+          </Center>
         </Box>
-      </header>
-    </div>
   );
 };
-
 export default Login;

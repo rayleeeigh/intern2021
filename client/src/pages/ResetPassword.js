@@ -41,9 +41,9 @@ const ResetPassword = () => {
   return (
     <Box w="100%" h="100vh" bgGradient="linear(to-r, green.200, pink.500)">
         <Center>
-        <Box mt="10vh" bg="gray.200" w="50%" align="center" borderRadius="3xl" h="80vh">
+        <Box mt="10vh" bg="gray.200" w="50%" align="center" borderRadius="3xl" h="70vh" boxShadow="2xl">
           <Container mt="10%">
-            <Heading size="md">Reset Password</Heading>
+            <Heading size="lg">Reset Password</Heading>
           </Container>
           <form onSubmit={handleSubmit(onSubmit)}>
           <Container mt="5%">
@@ -58,7 +58,7 @@ const ResetPassword = () => {
               </Container>
               <Container>
                 <FormControl id="password" isRequired>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>New Password</FormLabel>
                   <Input type={showPassword ? "text" : "password"} name="password" aria-invalid={errors.password ? "true" : "false"} {...register("password", { required: "Field must not be empty", minLength: 8 })} placeholder="Enter password" variant="filled" onChange={(event)=>{setPassword(event.target.value);}}/>
                   <Button position="absolute" ml="-10vh" mt="1vh" h="1.75rem" size="sm" onMouseDown={handleTooglePassword} onMouseUp={handleTooglePassword}>
                     {showPassword ? "Hide" : "Show"}

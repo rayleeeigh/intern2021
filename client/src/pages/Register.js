@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Box, Input, Container, Button, Center, Heading, FormControl, FormLabel} from "@chakra-ui/react";
+import { Box, Input, Container, Button, Center, Heading, FormControl, FormLabel, Stack} from "@chakra-ui/react";
 import Axios from 'axios';
 import {useForm} from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import { Image } from "@chakra-ui/react"
+import Background from "../assets/images/background.png";
 
 
 const Register = () => {
@@ -41,18 +43,20 @@ const Register = () => {
         })
     }
   return (
-    <Box w="100%" h="100vh" bgGradient="linear(to-r, green.200, pink.500)">
+    <Box position="relative" w="100%" h="100vh" bgGradient="linear(to-r, green.200, pink.500)">
         <Center>
-        <Box mt="10vh" bg="gray.200" w="50%" align="center" borderRadius="3xl" h="60vh">
-          <Container mt="10%">
-            <Heading size="md"> Registration Form</Heading>
+        <Box mt="10vh" bg="gray.200" w="50%" align="center" h="80vh" boxShadow="2xl">
+          <Container position="relative" display="inline-block" w="50%">
+          <Container position="absolute" >
+          <Container mt="20%">
+            <Heading size="md"> Create Account</Heading>
           </Container>
-          <Container mt="10%">
+          <Container mt="15%">
           <form  onSubmit={handleSubmit(onSubmit)}>
               <Container>
                 <FormControl id="email" >
                   <FormLabel>Email Address</FormLabel>
-                    <Input 
+                    <Input
                       {...register("email",{ required: "Email is required",
                          pattern: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$/i,
                          message:"Invalid format"})}
@@ -89,20 +93,51 @@ const Register = () => {
                 </FormControl>
               </Container>
               <Container>
+              <Stack spacing={10} paddingTop={8} paddingBottom={8}>
+              <Stack
+                direction={{ base: "column", sm: "row" }}
+                align={"start"}
+                justify={"space-between"}
+                >
                 <Button  
-                colorScheme="blue"
-                mt="2%"
+                bg="gray.800"
+                color="white"
                 type="submit"
+                _hover={{
+                  bg: "gray.500",
+                }}
+                w="45%"
                 disabled={!user.email && !user.password}
                 onClick={addAccount}
-                >Register
+                >Sign-up
                 </Button>
+                <Button  
+                bg="gray.200"
+                color="gray.800"
+                _hover={{
+                  bg: "gray.500",
+                }}
+                w="45%"
+                border="1px"
+                type="submit"
+                onClick={addAccount}
+                >Login
+                </Button>
+                </Stack>
+                </Stack>
               </Container>
               </form>
           </Container>
+          </Container>
+          </Container>
+          <Container position="relative" display="inline-block" w="50%">
+            <Container position="absolute"  mt="-18px">
+            <Image src={Background}/>
+            </Container>
+          </Container>
         </Box>
       </Center>
-      </Box>
+    </Box>
   )};
 
 export default Register;
