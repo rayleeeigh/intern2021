@@ -32,7 +32,7 @@ const ResetPassword = () => {
         Axios.post('http://localhost:5000/resetpassword',{
           email: email,
           password: password
-        }).then(()=>{
+        }).then((res)=>{
           console.log("Success");
         });
       };
