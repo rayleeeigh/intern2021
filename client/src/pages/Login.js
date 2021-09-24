@@ -70,7 +70,7 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const handleTooglePassword = () => setShowPassword(!showPassword)
-
+  const [errorsLogin,setErrorsLogin] = useState({});
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleToogleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword)
 
@@ -86,7 +86,7 @@ const Login = () => {
   // }
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    setErrors(Validation(user));
+    setErrorsLogin(Validation(user));
     if (Object.keys(Validation(user)).length === 0) {
       Axios.post('http://localhost:5000/login',{
         email: user.email,
@@ -130,7 +130,12 @@ const Login = () => {
       email: resetEmail,
       password: resetPassword
     }).then((res)=>{
-      console.log("Success");
+      if(res.send==200){
+        alert("Reset Success");
+      }else{
+        alert("Reset Failed");
+      }
+      
     });
   };
 const toast = useToast()
@@ -174,10 +179,10 @@ const toast = useToast()
                       placeholder="Email Address..."
                       value={user.email}
                       onChange={handleChange}
-                      style={{ border: errors.email ? "1px solid red" : "1px solid black" }}
+                      style={{ border: errorsLogin.email ? "1px solid red" : "1px solid black" }}
                     />
-                    {errors.email && (
-                      <p style={{ color: "red" }}>{errors.email}</p>
+                    {errorsLogin.email && (
+                      <p style={{ color: "red" }}>{errorsLogin.email}</p>
                     )}
                   </FormControl>
                   <FormControl id="password">
@@ -195,10 +200,10 @@ const toast = useToast()
                       value={user.password}
                       onChange={handleChange}
                       border="red"
-                      style={{ border: errors.password ? "1px solid red" : "1px solid black" }}
+                      style={{ border: errorsLogin.password ? "1px solid red" : "1px solid black" }}
                     />
-                    {errors.password && (
-                      <p style={{ color: "red" }}>{errors.password}</p>
+                    {errorsLogin.password && (
+                      <p style={{ color: "red" }}>{errorsLogin.password}</p>
                     )}
                   </FormControl>
                   <Stack spacing={10} paddingTop={8} paddingBottom={8}>
@@ -222,8 +227,8 @@ const toast = useToast()
                                     <FormLabel>Email Address</FormLabel>
                                     <Input name="resetemail" {...register("resetemail", { required: true, pattern: {value: /^\S+@\S+$/i, message: "Invalid Email"} })}  placeholder="Enter email..." variant="filled" onChange={(event)=>{setResetEmail(event.target.value);}}/>
                                   </FormControl>
-                                  {errors.resetemail &&  (
-                                      <Text color="red" fontSize="xs">{errors.resetemail.message}</Text>
+                                  {errorsLogin.resetemail &&  (
+                                      <Text color="red" fontSize="xs">{errorsLogin.resetemail.message}</Text>
                                   )}
                                 </Container>
                                 <Container>
